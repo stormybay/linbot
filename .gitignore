@@ -1,0 +1,10 @@
+vendor/
+.bundle/
+.code/
+.node_modules/
+.DS_STORE
+*.~
+*.sw*
+.env
+disclaimer.txt
+plugins/tmp/*
