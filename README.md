@@ -4,7 +4,8 @@ A simple discord bot written in ruby
 
 ## Technical Info
 - Language: Ruby 2.7.1
-- Libs: [discordrb]
+- Bundler Version: 2.1.4
+- Libs: [discordrb](https://github.com/discordrb/discordrb)
 
 ## Prerequisites
 Make sure you have the following environment variables in your `~/.bashrc` or `~/.bash_profile`:
