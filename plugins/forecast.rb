@@ -43,7 +43,6 @@ class Forecast
       response = http.get(uri.request_uri)
       @forecast = JSON.parse(response.body)
 
-      #return build_response()
       server_url = build_server_query()
       
       return {
@@ -74,24 +73,6 @@ class Forecast
     return file_name
   end
 
-  # build out the message that gets sent back to the server
-  def build_response
-    weather = @forecast["weather"][0]
-    temps   = @forecast["main"]
-
-    res = %Q(
-    **Current Forecast for #{@location}:**
-    > #{calculate_emoji_from_weather(weather["main"].to_sym)} **Weather:** #{weather["description"]}
-    > 🌡️ **Actual Temp:** #{temps["temp"]} #{@unit_abbreviation}
-    > 🌡️ **Feels like:** #{temps["feels_like"]} #{@unit_abbreviation}
-    > 🌡️ **High Temp:** #{temps["temp_max"]} #{@unit_abbreviation}
-    > 🌡️ **Low Temp:** #{temps["temp_min"]} #{@unit_abbreviation}
-    > 💨 **Wind:** #{@forecast["wind"]["speed"]}
-    )
-
-    res
-  end
-
   def build_server_query
     image_server = "http://localhost:8003/forecast"
 
@@ -114,18 +95,6 @@ class Forecast
     end
 
     "#{image_server}#{query}"
-  end
-
-  def calculate_emoji_from_weather(weather_main)
-    possible_weathers = {
-      "Clear": '🌞',
-      "Clouds": '☁️',
-      "Rain": '🌧️',
-      "Snow": '🌨️',
-      "Extreme": '⛈️'
-    }
-    
-    return possible_weathers.key?(weather_main) ? possible_weathers[weather_main] : '🌐'
   end
 
   # help text for the plugin
