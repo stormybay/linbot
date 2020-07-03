@@ -44,61 +44,26 @@ class Forecast
       response = http.get(uri.request_uri)
       @forecast = JSON.parse(response.body)
 
-      server_url = build_server_query()
-      
       return {
-        text: get_image(server_url),
-        type: 'image'
+        data: build_embed(),
+        type: 'embed'
       }
     end
   end
 
-  def get_image(url)
-    # initialize Selenium
-    options = Selenium::WebDriver::Chrome::Options.new
-    options.add_argument('--headless')
-    driver = Selenium::WebDriver.for(:chrome, options: options)
-
-    # navigate Selenium to the image server
-    driver.navigate.to(url)
-
-    # resize window and take a screenshot, and store it to a temp file
-    file = Tempfile.new(['test', '.png'])
-    driver.manage.window.resize_to(300, 193)
-    driver.save_screenshot(file.path)
-    file.rewind
-    file.close
-
-    # stop the selenium driver
-    driver.quit
-
-    #return the filename of the screenshot that was saved
-    return file.path
-  end
-
-  def build_server_query
-    image_server = "https://linbot-server.herokuapp.com/forecast"
-
-    query_data = {
-      location:        @location,
-      weather_main:    @forecast["weather"][0]["main"],
+  def build_embed
+    forecast = {
+      header:          @location.split(' ').map{|w| w.capitalize}.join(' '),
       weather_descrip: @forecast["weather"][0]["description"],
-      actual_temp:     @forecast["main"]["temp"],
-      feels_temp:      @forecast["main"]["feels_like"],
-      high_temp:       @forecast["main"]["temp_max"],
-      low_temp:        @forecast["main"]["temp_min"],
-      wind:            @forecast["wind"]["speed"],
-      humidity:        @forecast["main"]["humidity"]
+      weather_main:    @forecast["weather"][0]["main"],
+      footer_image:    "https://linbot-server.herokuapp.com/images/#{@forecast["weather"][0]["main"]}.jpg",
+      actual_temp:     "#{@forecast["main"]["temp"]} #{@unit_abbreviation}",
+      feels_temp:      "#{@forecast["main"]["feels_like"]} #{@unit_abbreviation}",
+      high_temp:       "#{@forecast["main"]["temp_max"]} #{@unit_abbreviation}",
+      low_temp:        "#{@forecast["main"]["temp_min"]} #{@unit_abbreviation}",
+      wind:            "#{@forecast["wind"]["speed"]} #{@unit_abbreviation == "F" ? "mph" : "km/h"}",
+      humidity:        "#{@forecast["main"]["humidity"]}%"  
     }
-  
-    query = "?units=#{@unit_abbreviation}"
-
-    query_string = query_data.keys.each do |metric|
-      sanitized_metric = url_encode(query_data[metric])
-      query += "&#{metric.to_s}=#{sanitized_metric}"
-    end
-
-    "#{image_server}#{query}"
   end
 
   # help text for the plugin
@@ -122,4 +87,5 @@ class Forecast
     end
     msg
   end
+
 end

@@ -1,4 +1,5 @@
 require 'discordrb'
+require 'discordrb/webhooks'
 require_relative './plugins/forecast.rb'
 require_relative './plugins/server_status.rb'
 
@@ -42,21 +43,18 @@ bot.message do |e|
         case res[:type]
         when 'text'
           e.respond(res[:text])
-        when 'image'
-          #stream = "data:image/png;base64,#{res[:text]}"
-          stream = res[:text]
-          e.send_file(File.open(res[:text], 'r'))
-          File.delete(res[:text])
+        when 'embed'
+          d = res[:data]
+          e.channel.send_embed() do |embed|
+            embed.title     = d[:header]
+            embed.colour    = 0xffd1dc
+            embed.image     = Discordrb::Webhooks::EmbedImage.new(url: "https://cdn.discordapp.com/embed/avatars/0.png")
+            embed.footer    = Discordrb::Webhooks::EmbedFooter.new(text: "footer text", icon_url: d[:footer_image])
 
-          #e.channel.send_embed("waffles") do |embed|
-          #  embed.title = "title ~~(did you know you can have markdown here too?)~~"
-          #  embed.colour = 0x3c34f9
-          #  embed.url = "https://discordapp.com"
-          #  embed.description = "this supports [named links](https://discordapp.com) on top of the previously shown subset of markdown. ```\nyes, even code blocks```"
-          #  embed.timestamp = Time.at(1593807519)
-          #end
-
-          #File.delete(res[:text])
+            d.keys().each do |f|
+              embed.add_field(name: f, value: d[f])
+            end
+          end
         end
       elsif cmd == :help
         commands = possible_commands.keys()
