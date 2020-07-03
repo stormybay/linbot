@@ -43,12 +43,23 @@ bot.message do |e|
         when 'text'
           e.respond(res[:text])
         when 'image'
+          #stream = "data:image/png;base64,#{res[:text]}"
+          stream = res[:text]
           e.send_file(File.open(res[:text], 'r'))
           File.delete(res[:text])
+
+          #e.channel.send_embed("waffles") do |embed|
+          #  embed.title = "title ~~(did you know you can have markdown here too?)~~"
+          #  embed.colour = 0x3c34f9
+          #  embed.url = "https://discordapp.com"
+          #  embed.description = "this supports [named links](https://discordapp.com) on top of the previously shown subset of markdown. ```\nyes, even code blocks```"
+          #  embed.timestamp = Time.at(1593807519)
+          #end
+
+          #File.delete(res[:text])
         end
       elsif cmd == :help
         commands = possible_commands.keys()
-
         help_msg = "**Possible Commands**\n"
 
         commands.each do |c|

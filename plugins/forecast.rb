@@ -1,4 +1,5 @@
 require 'net/http'
+require 'tempfile'
 require 'chromedriver-helper'
 require 'selenium-webdriver'
 require 'erb'
@@ -61,16 +62,18 @@ class Forecast
     # navigate Selenium to the image server
     driver.navigate.to(url)
 
-    # resize window and take a screenshot
-    file_name = "./plugins/tmp/screenshot-#{rand(1..50)}.png"
+    # resize window and take a screenshot, and store it to a temp file
+    file = Tempfile.new(['test', '.png'])
     driver.manage.window.resize_to(300, 193)
-    driver.save_screenshot(file_name)
+    driver.save_screenshot(file.path)
+    file.rewind
+    file.close
 
     # stop the selenium driver
     driver.quit
 
     #return the filename of the screenshot that was saved
-    return file_name
+    return file.path
   end
 
   def build_server_query
