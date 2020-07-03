@@ -4,8 +4,6 @@ require_relative './plugins/server_status.rb'
 
 bot_token         = ENV['linbot_token']
 bot               = Discordrb::Bot.new(token: bot_token, ignore_bots: true)
-sessions          = {}
-disclaimer        = ''
 prefix            = '!linbot'
 possible_commands = {
   forecast: {
@@ -17,18 +15,6 @@ possible_commands = {
     description: 'Retrieves the status of a game server.'
   }
 }
-possible_angry_emotes = [
-  "<:aight:708721212767076473>",
-  "<:aight:716379289548750918>",
-  "<:farfaA:667005188187488267>",
-  "😠",
-  ">:("
-]
-
-# load in the disclaimer
-data = File.foreach('disclaimer.txt') do |line|
-  disclaimer += line
-end
 
 bot.ready do |e|
   puts "#{bot.profile.username} is firing on all cylinders!"
@@ -36,11 +22,6 @@ end
 
 bot.message do |e|
   msg = e.message.content
-
-  # check for angry emotes!
-  if possible_angry_emotes.include?(msg)
-    e.respond(disclaimer)
-  end
 
   # check for commands
   if msg.start_with?(prefix)
