@@ -17,9 +17,9 @@ class Forecast
   end
 
   def call(args)
-    if args.empty?
+    if args.nil?
       return {
-        text: 'Please enter a location!',
+        text: help(),
         type: 'text'
       }
     else
@@ -63,7 +63,7 @@ class Forecast
 
     # resize window and take a screenshot
     file_name = "./plugins/tmp/screenshot-#{rand(1..50)}.png"
-    driver.manage.window.resize_to(300, 172)
+    driver.manage.window.resize_to(300, 193)
     driver.save_screenshot(file_name)
 
     # stop the selenium driver
@@ -84,7 +84,8 @@ class Forecast
       feels_temp:      @forecast["main"]["feels_like"],
       high_temp:       @forecast["main"]["temp_max"],
       low_temp:        @forecast["main"]["temp_min"],
-      wind:            @forecast["wind"]["speed"]
+      wind:            @forecast["wind"]["speed"],
+      humidity:        @forecast["main"]["humidity"]
     }
   
     query = "?units=#{@unit_abbreviation}"
@@ -98,7 +99,7 @@ class Forecast
   end
 
   # help text for the plugin
-  def help(command=nil)
+  def help()
     possible_commands = {
       forecast: [
         "**Command:** `forecast`",
@@ -111,11 +112,11 @@ class Forecast
         "\t`-c` will display the forecast in metric, omit for imperial"
       ]
     }
-
-    if !command.nil? && possible_commands.key?(command)
-      return possible_commands[command].join("\n")
-    else
-      return 'That command is not part of this plugin!'
+    msg = ''
+    possible_commands.keys().each do |command|
+      msg += possible_commands[command].join("\n")
+      msg += "\n"
     end
+    msg
   end
 end

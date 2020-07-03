@@ -1,5 +1,6 @@
 require 'discordrb'
 require_relative './plugins/forecast.rb'
+require_relative './plugins/server_status.rb'
 require 'pry'
 
 bot_token         = ENV['linbot_token']
@@ -10,7 +11,11 @@ prefix            = '!linbot'
 possible_commands = {
   forecast: {
     instance:    Forecast.new,
-    description: 'Retrieves the current forecast for a location'
+    description: 'Retrieves the current forecast for a location.'
+  },
+  server: {
+    instance:    ServerStatus.new,
+    description: 'Retrieves the status of a game server.'
   }
 }
 possible_angry_emotes = [
@@ -51,9 +56,8 @@ bot.message do |e|
 
       # if the command is valid, parse its args and instantiate the plugin with them
       if possible_commands.keys.include?(cmd)
-
         plugin = possible_commands[cmd][:instance]
-        res = plugin.call(args)
+        res    = plugin.call(args)
 
         case res[:type]
         when 'text'
@@ -63,22 +67,12 @@ bot.message do |e|
           File.delete(res[:text])
         end
       elsif cmd == :help
-        commands = possible_commands.keys
+        commands = possible_commands.keys()
 
-        if args.nil?
-          help_msg = "**Possible Commands**\n"
+        help_msg = "**Possible Commands**\n"
 
-          commands.each do |c|
-            help_msg += "> `#{c}`: #{possible_commands[c][:description]}\n"
-          end
-        else
-          cmd = args[0].to_sym
-
-          if possible_commands.keys.include?(cmd)
-            help_msg = possible_commands[cmd][:instance].help(cmd)
-          else
-            help_msg = 'No idea what that command is, try again.'
-          end
+        commands.each do |c|
+          help_msg += "> `#{c}`: #{possible_commands[c][:description]}\n"
         end
 
         e.respond(help_msg)
