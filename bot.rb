@@ -1,7 +1,6 @@
 require 'discordrb'
 require_relative './plugins/forecast.rb'
 require_relative './plugins/server_status.rb'
-require 'pry'
 
 bot_token         = ENV['linbot_token']
 bot               = Discordrb::Bot.new(token: bot_token, ignore_bots: true)
@@ -83,4 +82,5 @@ bot.message do |e|
   end
 end
 
+# start the bot
 bot.run()
