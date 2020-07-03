@@ -74,7 +74,7 @@ class Forecast
   end
 
   def build_server_query
-    image_server = "http://localhost:8003/forecast"
+    image_server = "https://linbot-server.herokuapp.com/forecast"
 
     query_data = {
       location:        @location,
