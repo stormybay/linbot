@@ -48,13 +48,11 @@ bot.message do |e|
           e.channel.send_embed() do |embed|
             embed.title  = d[:header]
             embed.colour = 0xffd1dc
-            embed.image  = Discordrb::Webhooks::EmbedImage.new(url: "https://cdn.discordapp.com/embed/avatars/0.png")
-            embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "footer text", icon_url: d[:footer_image])
+            embed.image  = Discordrb::Webhooks::EmbedImage.new(url: d[:image])
 
-            d.keys().each do |f|
-              if f != :header || f != :footer
-                embed.add_field(name: f, value: d[f])
-              end
+            d[:fields].each do |f|
+              name = f.keys[0]
+              embed.add_field(name: name, value: f[name])
             end
           end
         end
