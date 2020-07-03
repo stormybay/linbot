@@ -9,11 +9,13 @@ prefix            = '!linbot'
 possible_commands = {
   forecast: {
     instance:    Forecast.new,
-    description: 'Retrieves the current forecast for a location.'
+    description: 'Retrieves the current forecast for a location.',
+    active:      true
   },
   server: {
     instance:    ServerStatus.new,
-    description: 'Retrieves the status of a game server.'
+    description: 'Retrieves the status of a game server.',
+    active:      false
   }
 }
 
@@ -36,7 +38,7 @@ bot.message do |e|
       args = msg_split.length >= 3 ? msg_split[2..-1] : nil
 
       # if the command is valid, parse its args and instantiate the plugin with them
-      if possible_commands.keys.include?(cmd)
+      if possible_commands.keys.include?(cmd) && possible_commands[cmd][:active]
         plugin = possible_commands[cmd][:instance]
         res    = plugin.call(args)
 
@@ -48,7 +50,10 @@ bot.message do |e|
           e.channel.send_embed() do |embed|
             embed.title  = d[:header]
             embed.colour = 0xffd1dc
-            embed.image  = Discordrb::Webhooks::EmbedImage.new(url: d[:image])
+
+            if d[:image] 
+              embed.image = Discordrb::Webhooks::EmbedImage.new(url: d[:image])
+            end
 
             d[:fields].each do |f|
               name = f.keys[0]
@@ -61,7 +66,9 @@ bot.message do |e|
         help_msg = "**Possible Commands**\n"
 
         commands.each do |c|
-          help_msg += "> `#{c}`: #{possible_commands[c][:description]}\n"
+          if possible_commands[c][:active]
+            help_msg += "> `#{c}`: #{possible_commands[c][:description]}\n"
+          end
         end
 
         e.respond(help_msg)
