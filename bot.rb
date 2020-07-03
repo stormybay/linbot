@@ -46,13 +46,15 @@ bot.message do |e|
         when 'embed'
           d = res[:data]
           e.channel.send_embed() do |embed|
-            embed.title     = d[:header]
-            embed.colour    = 0xffd1dc
-            embed.image     = Discordrb::Webhooks::EmbedImage.new(url: "https://cdn.discordapp.com/embed/avatars/0.png")
-            embed.footer    = Discordrb::Webhooks::EmbedFooter.new(text: "footer text", icon_url: d[:footer_image])
+            embed.title  = d[:header]
+            embed.colour = 0xffd1dc
+            embed.image  = Discordrb::Webhooks::EmbedImage.new(url: "https://cdn.discordapp.com/embed/avatars/0.png")
+            embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "footer text", icon_url: d[:footer_image])
 
             d.keys().each do |f|
-              embed.add_field(name: f, value: d[f])
+              if f != :header || f != :footer
+                embed.add_field(name: f, value: d[f])
+              end
             end
           end
         end

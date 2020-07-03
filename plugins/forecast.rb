@@ -53,16 +53,15 @@ class Forecast
 
   def build_embed
     forecast = {
-      header:          @location.split(' ').map{|w| w.capitalize}.join(' '),
-      weather_descrip: @forecast["weather"][0]["description"],
-      weather_main:    @forecast["weather"][0]["main"],
-      footer_image:    "https://linbot-server.herokuapp.com/images/#{@forecast["weather"][0]["main"]}.jpg",
-      actual_temp:     "#{@forecast["main"]["temp"]} #{@unit_abbreviation}",
-      feels_temp:      "#{@forecast["main"]["feels_like"]} #{@unit_abbreviation}",
-      high_temp:       "#{@forecast["main"]["temp_max"]} #{@unit_abbreviation}",
-      low_temp:        "#{@forecast["main"]["temp_min"]} #{@unit_abbreviation}",
-      wind:            "#{@forecast["wind"]["speed"]} #{@unit_abbreviation == "F" ? "mph" : "km/h"}",
-      humidity:        "#{@forecast["main"]["humidity"]}%"  
+      "header":       @location.split(' ').map{|w| w.capitalize}.join(' '),
+      "footer":       "https://linbot-server.herokuapp.com/images/#{@forecast["weather"][0]["main"]}.jpg",
+      "Forecast":     @forecast["weather"][0]["description"],
+      "Current temp": "#{@forecast["main"]["temp"]} #{@unit_abbreviation}",
+      "Feels like":   "#{@forecast["main"]["feels_like"]} #{@unit_abbreviation}",
+      "High":         "#{@forecast["main"]["temp_max"]} #{@unit_abbreviation}",
+      "Low":          "#{@forecast["main"]["temp_min"]} #{@unit_abbreviation}",
+      "Wind":         "#{@forecast["wind"]["speed"]} #{@unit_abbreviation == "F" ? "mph" : "km/h"}",
+      "Humidity":     "#{@forecast["main"]["humidity"]}%"  
     }
   end
 
