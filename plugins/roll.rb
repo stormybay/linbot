@@ -28,51 +28,38 @@ class Roll
     else
       if !roll_counter.nil?
         roll_counter.times do
-          roll = rand(0..sides)
-
-          if !modifier.nil?
-            amt = modifier[2].to_i
-            case modifier[1]
-            when "+"
-              roll += amt
-            when "-"
-              roll -= amt
-            end
-          end
-
-          rolls << roll
+          rolls << rand(0..sides)
         end
       else
-        roll = rand(0..sides)
-
-        if !modifier.nil?
-          amt = modifier[2].to_i
-          case modifier[1]
-          when "+"
-            roll += amt
-          when "-"
-            roll -= amt
-          end
-        end
-
-        rolls << roll
+        rolls << rand(0..sides)
       end
     end
 
-    build_response(rolls)
+    build_response(rolls, modifier)
   end
 
   # build the discord message to send back with the rolls
-  def build_response(rolls)
+  def build_response(rolls, modifier)
     sum = 0
     msg = "```\n"
     rolls.each_with_index do |roll, index|
       msg += "Roll ##{index+1}: #{roll}\n"
       sum += roll
     end
-    msg += "-----\nTotal: #{sum}\n```"
+    msg += "-----\nTotal: #{sum}"
 
-    puts msg
+    if !modifier.nil?
+      amt = modifier[2].to_i
+      case modifier[1]
+      when "+"
+        sum += amt
+        msg += " + #{amt} = #{sum}"
+      when "-"
+        sum -= amt
+        msg += " - #{amt} = #{sum}"
+      end
+    end
+    msg += "\n```"
     msg
   end
 
