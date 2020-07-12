@@ -23,16 +23,22 @@ class Roll
     # the modifier will only not be nil if they have add a valid number after the operator, so it checks both.
     modifier     = dice.match(/d\d+([+-])/).nil? ? nil : dice.match(/d\d+([+-])(\d+)/)
 
-    if sides.nil? || sides < 1
-      return help()
-    else
-      if !roll_counter.nil?
-        roll_counter.times do
-          rolls << rand(1..sides)
-        end
-      else
+    # check sides
+    if sides.nil? || sides <= 1 || sides > 100
+      return "Please specify a dice with a proper number of sides (at least 2, no more than 100)"
+    end
+
+    if !roll_counter.nil?
+      # check roll counter
+      if roll_counter == 0 || roll_counter > 16
+        return "The minimum number of rolls is one, and the max is 16. You may do `!linbot roll d20` however instead of `!linbot roll 1d20`"
+      end
+
+      roll_counter.times do
         rolls << rand(1..sides)
       end
+    else
+      rolls << rand(1..sides)
     end
 
     build_response(rolls, modifier)
@@ -73,6 +79,11 @@ class Roll
         "\t`!linbot roll 1d20-3`",
         "\t`!linbot roll 2d20+1`",
         "\t`!linbot roll 1d20`",
+        "\t`!linbot roll d20`",
+        "**Notes:**",
+        "\t- You may have from 2-16 rolls in a single command, i.e `2d20` to `16d20`",
+        "\t- Dice can range from 2 to 100 sides, i.e `d2` to `d100`",
+        "\t- There is currently no cap to the modifier, i.e `2d20+1000000` is valid.",
       ]
     }
     msg = ''
