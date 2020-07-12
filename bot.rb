@@ -1,6 +1,7 @@
 require 'discordrb'
 require 'discordrb/webhooks'
 require_relative './plugins/forecast.rb'
+require_relative './plugins/roll.rb'
 require_relative './plugins/server_status.rb'
 
 bot_token         = ENV['linbot_token']
@@ -10,6 +11,11 @@ possible_commands = {
   forecast: {
     instance:    Forecast.new,
     description: 'Retrieves the current forecast for a location.',
+    active:      true
+  },
+  roll: {
+    instance:    Roll.new,
+    description: 'Rolls a dice of the amount and sides specified.',
     active:      true
   },
   server: {
@@ -44,7 +50,7 @@ bot.message do |e|
 
         case res[:type]
         when 'text'
-          e.respond(res[:text])
+          e.respond(res[:data])
         when 'embed'
           d = res[:data]
           e.channel.send_embed() do |embed|

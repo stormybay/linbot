@@ -20,7 +20,7 @@ class Forecast
   def call(args)
     if args.nil?
       return {
-        text: help(),
+        data: help(),
         type: 'text'
       }
     else
