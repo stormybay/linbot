@@ -28,10 +28,10 @@ class Roll
     else
       if !roll_counter.nil?
         roll_counter.times do
-          rolls << rand(0..sides)
+          rolls << rand(1..sides)
         end
       else
-        rolls << rand(0..sides)
+        rolls << rand(1..sides)
       end
     end
 
