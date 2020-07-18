@@ -3,6 +3,7 @@ require 'discordrb/webhooks'
 require_relative './plugins/forecast.rb'
 require_relative './plugins/roll.rb'
 require_relative './plugins/server_status.rb'
+require_relative './plugins/convert.rb'
 
 bot_token         = ENV['linbot_token']
 bot               = Discordrb::Bot.new(token: bot_token, ignore_bots: true)
@@ -11,6 +12,11 @@ possible_commands = {
   forecast: {
     instance:    Forecast.new,
     description: 'Retrieves the current forecast for a location.',
+    active:      true
+  },
+  convert: {
+    instance:    Converter.new,
+    description: 'Converts the given temperature into other units',
     active:      true
   },
   roll: {

@@ -52,6 +52,8 @@ class Forecast
   end
 
   def build_embed
+    puts @forecast["weather"][0]["main"]
+
     forecast = {
       header: @location.split(' ').map{|w| w.capitalize}.join(' '),
       image:  "https://linbot-server.herokuapp.com/images/#{@forecast["weather"][0]["main"]}.jpg",
