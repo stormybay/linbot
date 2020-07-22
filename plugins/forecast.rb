@@ -54,17 +54,17 @@ class Forecast
   def build_embed
     puts @forecast["weather"][0]["main"]
 
+    temps =  "**Current:** #{@forecast["main"]["temp"]} #{@unit_abbreviation}\n"
+    temps += "**Feels Like:** #{@forecast["main"]["feels_like"]} #{@unit_abbreviation}\n"
+    temps += "**Low/High:** #{@forecast["main"]["temp_min"]}/#{@forecast["main"]["temp_max"]} #{@unit_abbreviation}"
+
     forecast = {
       header: @location.split(' ').map{|w| w.capitalize}.join(' '),
       image:  "https://linbot-server.herokuapp.com/images/#{@forecast["weather"][0]["main"]}.jpg",
       fields: [
-        {"Forecast":     @forecast["weather"][0]["description"]},
-        {"Current temp": "#{@forecast["main"]["temp"]} #{@unit_abbreviation}"},
-        {"Feels like":   "#{@forecast["main"]["feels_like"]} #{@unit_abbreviation}"},
-        {"High":         "#{@forecast["main"]["temp_max"]} #{@unit_abbreviation}"},
-        {"Low":          "#{@forecast["main"]["temp_min"]} #{@unit_abbreviation}"},
-        {"Wind":         "#{@forecast["wind"]["speed"]} #{@unit_abbreviation == "F" ? "mph" : "km/h"}"},
-        {"Humidity":     "#{@forecast["main"]["humidity"]}%"}
+        {"Forecast": @forecast["weather"][0]["description"]},
+        {"Temps":    temps},
+        {"Misc":     "**Wind:** #{@forecast["wind"]["speed"]} #{@unit_abbreviation == "F" ? "mph" : "km/h"}\n**Humidity:** #{@forecast["main"]["humidity"]}%"},
       ]
     }
   end
