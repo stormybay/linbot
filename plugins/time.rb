@@ -1,12 +1,9 @@
 require 'time'
 
-class Timeit
+class TimePlugin
 
   def call(args)
-    return {
-      data: get_time(args),
-      type: 'embed'
-    }
+    return get_time(args)
   end
 
   def get_time(args=nil)
@@ -30,12 +27,26 @@ class Timeit
 
     # DateTime.parse('Sat, 3 Feb 2001 04:05:06 +0700')
     if !args.nil?
-      t = Time.rfc2822(args.join(' '))
-      header = "Time for #{t}"
+      if args[0] == "now" || args[0] == "current"
+        # this will use the timezone of the machine hosting the bot.
+        t = Time.now
+        header = "Current Time"
+      else
+        begin
+          t = Time.rfc2822(args.join(' '))
+          header = "Time for #{t}"
+        rescue ArgumentError => e
+          return {
+            data: "`Invalid time passed, please see below for help on the expected format.`\n\n#{help()}",
+            type: 'text'
+          }
+        end
+      end
     else
-      # this will use the timezone of the machine hosting the bot.
-      t = Time.now
-      header = "Current Time"
+      return {
+        data: help(),
+        type: 'text'
+      }
     end
 
     # take the timezone of the given time object and convert to UTC
@@ -45,11 +56,16 @@ class Timeit
       embed_str += "**#{z}** - #{(utc + time_zones[z][:offset]).strftime("%A, %m/%d/%Y, %T")}\n"
     end
 
-    return {
+    data = {
       header: header,
       fields: [
         {"Times": embed_str}
       ]
+    }
+
+    return {
+      data: data,
+      type: "embed"
     }
   end
 
@@ -60,11 +76,12 @@ class Timeit
         "**Command:** `time`",
         "**Description:** Tells the time in various timezones",
         "**Usage:**",
-        "\t`!linbot time`",
+        "\t`!linbot time now`",
+        "\t`!linbot time current`",
         "\t`!linbot time Sat, 25 Jul 2020 16:30:00 +0600`",
         "**Notes:**",
-        "\t- If no arguments are passed it will simply return the current time in all of the given timezones",
-        "\t- Due to how frustrating parsing dates typically is, the bot will expect it to be in the above format if you wish to give it a time.",
+        "\t- You can use either 'now' or 'current' to get the current time",
+        "\t- Due to how frustrating parsing dates typically is, the bot will expect it to be in the above format if you wish to give it a specific time.",
       ]
     }
     msg = ''

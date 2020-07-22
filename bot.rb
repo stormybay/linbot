@@ -16,8 +16,8 @@ possible_commands = {
     description: 'Converts the given temperature into other units',
     active:      true
   },
-  timeit: {
-    instance:    Timeit.new,
+  time: {
+    instance:    TimePlugin.new,
     description: 'Returns time in the different timezones',
     active:      true
   },
