@@ -1,9 +1,6 @@
 require 'discordrb'
 require 'discordrb/webhooks'
-require_relative './plugins/forecast.rb'
-require_relative './plugins/roll.rb'
-require_relative './plugins/server_status.rb'
-require_relative './plugins/convert.rb'
+Dir["./plugins/*.rb"].each {|f| require f}
 
 bot_token         = ENV['linbot_token']
 bot               = Discordrb::Bot.new(token: bot_token, ignore_bots: true)
@@ -17,6 +14,11 @@ possible_commands = {
   convert: {
     instance:    Converter.new,
     description: 'Converts the given temperature into other units',
+    active:      true
+  },
+  timeit: {
+    instance:    Timeit.new,
+    description: 'Returns time in the different timezones',
     active:      true
   },
   roll: {
