@@ -2,9 +2,9 @@ require 'discordrb'
 require 'discordrb/webhooks'
 Dir["./plugins/*.rb"].each {|f| require f}
 
-bot_token         = ENV['linbot_token']
+bot_token         = ENV['lilybot_token']
 bot               = Discordrb::Bot.new(token: bot_token, ignore_bots: true)
-prefix            = '!linbot'
+prefix            = '!lilybot'
 possible_commands = {
   forecast: {
     instance:    Forecast.new,
@@ -26,15 +26,21 @@ possible_commands = {
     description: 'Rolls a dice of the amount and sides specified.',
     active:      true
   },
-  server: {
-    instance:    ServerStatus.new,
-    description: 'Retrieves the status of a game server.',
-    active:      false
+  edsearch: {
+    instance:    ED.new,
+    description: 'Queries EDDB json API to allow for quick searching of items',
+    active:      true
   }
+ # not used currently but keeping incase I re-activate the servers.
+ # server: {
+ #   instance:    ServerStatus.new,
+ #   description: 'Retrieves the status of a game server.',
+ #   active:      false
+ # }
 }
 
 bot.ready do |e|
-  puts "#{bot.profile.username} is firing on all cylinders!"
+  puts "Lilybot is firing on all cylinders!"
 end
 
 bot.message do |e|

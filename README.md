@@ -1,4 +1,4 @@
-# Linbot
+# Lilybot
 
 A simple discord bot written in ruby
 
@@ -9,7 +9,7 @@ A simple discord bot written in ruby
 
 ## Prerequisites
 Make sure you have the following environment variables in your `~/.bashrc` or `~/.bash_profile`:
-- `linbot_token` from [Discord's dev services](https://discord.com/developers)
+- `lilybot_token` from [Discord's dev services](https://discord.com/developers)
 - `weather_api_key` from [OpenWeatherMap API](https://openweathermap.org/)
 
 You can do this via for example:

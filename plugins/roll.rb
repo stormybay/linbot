@@ -31,7 +31,7 @@ class Roll
     if !roll_counter.nil?
       # check roll counter
       if roll_counter == 0 || roll_counter > 16
-        return "The minimum number of rolls is one, and the max is 16. You may do `!linbot roll d20` however instead of `!linbot roll 1d20`"
+        return "The minimum number of rolls is one, and the max is 16. You may do `!lilybot roll d20` however instead of `!lilybot roll 1d20`"
       end
 
       roll_counter.times do
@@ -76,10 +76,10 @@ class Roll
         "**Command:** `roll`",
         "**Description:** Rolls a dice of the amount and sides specified",
         "**Usage:**",
-        "\t`!linbot roll 1d20-3`",
-        "\t`!linbot roll 2d20+1`",
-        "\t`!linbot roll 1d20`",
-        "\t`!linbot roll d20`",
+        "\t`!lilybot roll 1d20-3`",
+        "\t`!lilybot roll 2d20+1`",
+        "\t`!lilybot roll 1d20`",
+        "\t`!lilybot roll d20`",
         "**Notes:**",
         "\t- You may have from 2-16 rolls in a single command, i.e `2d20` to `16d20`",
         "\t- Dice can range from 2 to 100 sides, i.e `d2` to `d100`",

@@ -43,7 +43,7 @@ class ServerStatus
         "**Command:** `server`",
         "**Description:** retrieves the status of a game server",
         "**Usage:**",
-        "\t`!linbot server starbound`",
+        "\t`!lilybot server starbound`",
         "**Possible games:**",
         "#{@possible_games.keys().map{|game| "- #{game}"}.join("\n")}"
       ],

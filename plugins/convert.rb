@@ -52,9 +52,9 @@ class Converter
         "**Command:** `convert`",
         "**Description:** Converts the given temperature into other units",
         "**Usage:**",
-        "\t`!linbot convert 32F`",
-        "\t`!linbot convert 0C`",
-        "\t`!linbot convert 0 C`",
+        "\t`!lilybot convert 32F`",
+        "\t`!lilybot convert 0C`",
+        "\t`!lilybot convert 0 C`",
         "**Notes:**",
         "\t- Units are not case sensitive",
       ]

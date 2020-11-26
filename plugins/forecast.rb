@@ -76,9 +76,9 @@ class Forecast
         "**Command:** `forecast`",
         "**Description:** Retrieves the current forecast for a location",
         "**Usage:**",
-        "\t`!linbot forecast Chicago`",
-        "\t`!linbot forecast c Chicago`",
-        "\t`!linbot forecast Chicago, Illinois`",
+        "\t`!lilybot forecast Chicago`",
+        "\t`!lilybot forecast c Chicago`",
+        "\t`!lilybot forecast Chicago, Illinois`",
         "**Notes:**",
         "\t`c` will display the forecast in metric, omit for imperial"
       ]
