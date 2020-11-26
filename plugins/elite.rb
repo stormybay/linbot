@@ -1,6 +1,5 @@
 require 'net/http'
 require 'erb'
-require 'pry'
 
 class ED
   include ERB::Util
@@ -33,8 +32,6 @@ class ED
       http.use_ssl = true
       response = http.get(uri.request_uri)
       @eddb_info = JSON.parse(response.body)
-
-      binding.pry
 
       return {
         data: build_embed(mode),
